@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Api\User;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Symfony\Contracts\Service\Attribute\Required;
 
 class UserRequest extends FormRequest
 {
@@ -24,12 +25,33 @@ class UserRequest extends FormRequest
     public function rules()
     {
         return [
-            'email' => 'require|unique:users, email',
-            'username' => 'require|unique:users, username',
-            'password' => 'require',
-            'name' => 'require',
-            'gender' => 'require|in:male, female',
+            'email' => 'required|unique:users,email',
+            'username' => 'required|unique:users,username',
+            'password' => 'required',
+            'name' => 'required',
+            'gender' => 'required|in:male,female',
             
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'required' => ':attribute harus di isi',
+            'unique' => ':attribute sudah dipakai',
+            'in' => ':attribute harus bernilai antara :values',
+            'email' => ':attribute tidak memenuhi format email yang benar',
+        ];
+    }
+
+    public function attributes()
+    {
+        return [
+            'email' => 'E-mail',
+            'username' => 'Username',
+            'password' => 'Kata sandi',
+            'name' =>'Nama',
+            'gender' => 'Jenis kelamin',
         ];
     }
 }
