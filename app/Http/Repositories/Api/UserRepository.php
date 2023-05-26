@@ -14,4 +14,29 @@ class UserRepository
             'message' => 'user berhasil ditambahkan'
         ]);
     }
+
+    public static function login(array $data) {
+        $token = auth()->attempt($data);
+        if ($token) {
+            return response()->json([
+                'message'=> 'Sukses login',
+                'token' => $token
+            ]);
+        } else {
+            return response()->json([
+                'message' => 'Username atau Kata sandi salah',
+            ], 422);
+        }
+    }
+
+    public static function update(array $data) {
+        $user = auth()->user();
+
+        $user->update($data);
+
+        return response()->json([
+            'message' => 'Berhasil mengubah data',
+        ]);
+
+    }
 }

@@ -19,6 +19,16 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
-Route::prefix('user')->group(function() {
-    Route::post('register', [UserController::class, 'register']);
+Route::middleware('guest')->group(function () {
+    Route::prefix('user')->group(function() {
+        Route::post('register', [UserController::class, 'register']);
+        Route::post('login', [UserController::class, 'login']);
+        Route::post('update', [UserController::class, 'update']);
+    });
+});
+
+Route::middleware('auth:user')->group(function () {
+    Route::prefix('user')->group(function() {
+        Route::post('update', [UserController::class, 'update']);
+    });
 });
