@@ -32,6 +32,8 @@ class UserRepository
     public static function update(array $data) {
         $user = auth()->user();
 
+        $data['password'] = bcrypt($data['password']);
+
         $user->update($data);
 
         return response()->json([

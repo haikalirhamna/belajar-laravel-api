@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\BlogController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -25,10 +26,20 @@ Route::middleware('guest')->group(function () {
         Route::post('login', [UserController::class, 'login']);
         Route::post('update', [UserController::class, 'update']);
     });
+
 });
 
 Route::middleware('auth:user')->group(function () {
     Route::prefix('user')->group(function() {
         Route::post('update', [UserController::class, 'update']);
+    });
+
+    Route::prefix('blog')->group(function() {
+        Route::get('/', [BlogController::class, 'showAll']);
+        Route::get('/{blog}', [BlogController::class, 'show']);
+        Route::post('/', [BlogController::class, 'store']);
+        Route::post('/{blog}', [BlogController::class, 'update']);
+        Route::delete('/', [BlogController::class, 'deleteAll']);
+        Route::delete('/{blog}', [BlogController::class, 'delete']);
     });
 });
