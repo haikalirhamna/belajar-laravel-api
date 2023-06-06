@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Models\Blog;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Api\Blog\StoreRequest;
 use App\Http\Repositories\Api\BlogRepository;
 
 class BlogController extends Controller

@@ -5,6 +5,7 @@ namespace App\Http\Repositories\Api;
 use Attribute;
 use Exception;
 use App\Models\Blog;
+use Illuminate\Support\Facades\Storage;
 
 class BlogRepository
 {
@@ -19,6 +20,9 @@ class BlogRepository
 
     public static function show(Blog $blog) {
         if ($blog->user_id === auth('user')->id()) {
+
+            // $blog->image = Storage::url($blog->image);
+
             return response()->json(
                 compact('blog')
             );
@@ -30,7 +34,18 @@ class BlogRepository
     }
 
     public static function store(array $data) {
+        $user = auth('user')->user();
 
+        $blog = $user->blogs()->create($data);
+
+        $image_path = Storage::put('blogs/'.$blog->id, $data['image']); 
+
+        $blog->image = $image_path;
+        $blog->save();
+
+        return response()->json([
+            'message' => 'Blog berhasil dibuat'
+        ]);
     }
 
     public static function update(Blog $blog, array $data) {
