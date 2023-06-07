@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\Blog\StoreRequest;
 use App\Http\Repositories\Api\BlogRepository;
+use App\Http\Requests\Api\Blog\UpdateRequest;
 
 class BlogController extends Controller
 {
@@ -30,7 +31,7 @@ class BlogController extends Controller
 
     public function update(Blog $blog, UpdateRequest $request) {
         return $this->transactionData(
-            BlogRepository::update($request->validated())
+            BlogRepository::update($blog, $request->validated())
         );
     }
 

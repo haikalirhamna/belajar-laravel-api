@@ -4,7 +4,7 @@ namespace App\Http\Requests\Api\Blog;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreRequest extends FormRequest
+class UpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,7 +26,7 @@ class StoreRequest extends FormRequest
         return [
             'title' => 'required',
             'content' => 'required',
-            'image' => 'required|mimes:jpg, jpeg, png',
+            'image' => 'mimes:jpg,jpeg,png',
         ];
     }
 
@@ -34,7 +34,7 @@ class StoreRequest extends FormRequest
     {
         return [
             'required' => ':attribute harus diisi',
-            'mimes' => ':attribute harus berekstensi jpg,jpeg,png'
+            'mimes' => ':attribute harus berekstensi jpg, jpeg, atau png'
         ];
     }
 

@@ -49,7 +49,23 @@ class BlogRepository
     }
 
     public static function update(Blog $blog, array $data) {
+        if (auth()->id() === $blog->user_id) {
+            if (isset($data['image'])){
+                // getRawOriginal untuk mendapatkan value asli/path
+                Storage::delete($blog->getRawOriginal('image'));
+                $image_path = Storage::put('blogs/'.$blog->id, $data['image']);
+                $data['image'] = $image_path;
+            }
+            $blog->update($data);
 
+            return response()->json([
+                'message' => 'Blog berhasil diubah'
+            ]);
+        } else {
+            return response()->json([
+                'message' => 'Blog ini bukan milik anda'
+            ], 403);
+        }
     }
 
     public static function delete(Blog $blog) {
