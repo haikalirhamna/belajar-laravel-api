@@ -2,21 +2,24 @@
 
 namespace App\Http\Repositories\Api;
 
-use App\Models\User;
+use Exception;
+use App\Models\Admin;
 
-class UserRepository
+class AdminRepository
 {
     public static function register(array $data) {
         $data['password'] = bcrypt($data['password']);
 
-        User::create($data);
+        Admin::create($data);
+
         return response()->json([
-            'message' => 'user berhasil ditambahkan'
+            'message' => 'Berhasil mendaftarkan admin'
         ]);
     }
 
     public static function login(array $data) {
-        $token = auth('user')->attempt($data);
+        $token = auth('admin')->attempt($data);
+        
         if ($token) {
             return response()->json([
                 'message'=> 'Sukses login',
@@ -30,7 +33,7 @@ class UserRepository
     }
 
     public static function update(array $data) {
-        $user = auth('user')->user();
+        $user = auth('admin')->user();
 
         if (isset($data['password'])) {
             $data['password'] = bcrypt($data['password']);

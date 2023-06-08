@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\AdminController;
 use App\Http\Controllers\Api\BlogController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Http\Request;
@@ -24,9 +25,19 @@ Route::middleware('guest')->group(function () {
     Route::prefix('user')->group(function() {
         Route::post('register', [UserController::class, 'register']);
         Route::post('login', [UserController::class, 'login']);
-        Route::post('update', [UserController::class, 'update']);
+        // Route::post('update', [UserController::class, 'update']);
+    });
+    Route::prefix('admin')->group(function() {
+        Route::post('register', [AdminController::class, 'register']);
+        Route::post('login', [AdminController::class, 'login']);
     });
 
+});
+
+Route::middleware('auth:admin')->group(function () {
+    Route::prefix('admin')->group(function () {
+        Route::post('update', [AdminController::class, 'update']);
+    });
 });
 
 Route::middleware('auth:user')->group(function () {
